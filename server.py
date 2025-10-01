@@ -21,8 +21,9 @@ def emotion_detect():
     else:  # GET
         text_to_analyze = request.args.get("textToAnalyze")
 
+     # >>>>>> aqui: retornar 200 com a mensagem (sem status 400)
     if not text_to_analyze or not text_to_analyze.strip():
-        return "Invalid text! Please try again!", 400
+        return "Invalid text! Please try again!"
 
     result = emotion_detector(text_to_analyze)
 
@@ -33,8 +34,9 @@ def emotion_detect():
     sadness = result.get("sadness")
     dom     = result.get("dominant_emotion")
 
-    if None in (anger, disgust, fear, joy, sadness) or not dom:
-        return "Invalid text! Please try again!", 500
+    # Task 7 requirement: when dominant_emotion is None → show error message
+    if dom is None:
+        return "Invalid text! Please try again!"
 
     formatted = (
         f"For the given statement, the system response is "
